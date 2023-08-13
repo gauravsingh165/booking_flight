@@ -1,0 +1,15 @@
+<h1>Passenger Information</h1>
+
+<p>Selected Flight: <%= @flight.departure_airport.code %> to <%= @flight.arrival_airport.code %> departing at <%= @flight.start_datetime %> (Duration: <%= @flight.flight_duration %> hours)</p>
+
+<%= form_for @booking do |f| %>
+  <%= f.hidden_field :flight_id, value: @flight.id %>
+  <%= f.fields_for :passengers do |p| %>
+    <h3>Passenger <%= p.index + 1 %></h3>
+    <%= p.label :name, 'Name' %>
+    <%= p.text_field :name %>
+    <%= p.label :email, 'Email' %>
+    <%= p.text_field :email %>
+  <% end %>
+  <%= f.submit 'Continue to Booking' %>
+<% end %>

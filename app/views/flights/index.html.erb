@@ -1,0 +1,14 @@
+<%= form_tag flights_path, method: :get do %>
+    From- <%= select_tag :departure_airport_id, options_for_select(Airport.all.map { |a| [a.code, a.id] }) %><br>
+    To- <%= select_tag :arrival_airport_id, options_for_select(Airport.all.map { |a| [a.code, a.id] }) %><br>
+   Passenger Count <%= select_tag :passenger_count, options_for_select((1..4).map { |n| [n, n] }) %><br>
+   Flight Date <%= select_date Date.today, prefix: :flight_date %><br>
+    <%= submit_tag 'Search Flights' %>
+  <% end %>
+  <% @flights.each do |flight| %>
+    <p>
+      Flight from <%= flight.departure_airport.code %> to <%= flight.arrival_airport.code %> departing at <%= flight.start_datetime %> (Duration: <%= flight.flight_duration %> hours)
+    </p>
+    <%= link_to 'Book', new_booking_path(flight_id: flight.id, passenger_count: @passenger_count) %>
+  <% end %>
+  
