@@ -1,14 +1,94 @@
-<%= form_tag flights_path, method: :get do %>
-    From- <%= select_tag :departure_airport_id, options_for_select(Airport.all.map { |a| [a.code, a.id] }) %><br>
-    To- <%= select_tag :arrival_airport_id, options_for_select(Airport.all.map { |a| [a.code, a.id] }) %><br>
-   Passenger Count <%= select_tag :passenger_count, options_for_select((1..4).map { |n| [n, n] }) %><br>
-   Flight Date <%= select_date Date.today, prefix: :flight_date %><br>
-    <%= submit_tag 'Search Flights' %>
+<style>
+  .container {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .form-select {
+    width: 150px;
+  }
+
+  .form-input {
+    width: 80px;
+  }
+
+  .form-submit {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .flight-card {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+  }
+
+  .flight-info {
+    margin-bottom: 10px;
+  }
+
+  .book-link {
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-decoration: none;
+  }
+
+  .no-flights {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    text-align: center;
+    color: red;
+  }
+</style>
+
+<div class="container">
+  <%= form_tag flights_path, method: :get do %>
+    <div class="form-label">From:</div>
+    <%= select_tag :departure_airport_id, options_for_select(Airport.all.map { |a| [a.code, a.id] }), class: "form-select" %>
+
+    <div class="form-label">To:</div>
+    <%= select_tag :arrival_airport_id, options_for_select(Airport.all.map { |a| [a.code, a.id] }), class: "form-select" %>
+
+    <div class="form-label">Passenger Count:</div>
+    <%= select_tag :passenger_count, options_for_select((1..4).map { |n| [n, n] }), class: "form-input" %>
+
+    <div class="form-label">Flight Date:</div>
+    <%= select_date Date.today, prefix: :flight_date %>
+
+    <%= submit_tag 'Search Flights', class: "form-submit" %>
   <% end %>
+</div>
+
+<% if @flights.present? %>
   <% @flights.each do |flight| %>
-    <p>
-      Flight from <%= flight.departure_airport.code %> to <%= flight.arrival_airport.code %> departing at <%= flight.start_datetime %> (Duration: <%= flight.flight_duration %> hours)
-    </p>
-    <%= link_to 'Book', new_booking_path(flight_id: flight.id, passenger_count: @passenger_count) %>
+    <div class="flight-card">
+      <div class="flight-info">
+        Flight from <%= flight.departure_airport.code %> to <%= flight.arrival_airport.code %><br>
+        Departing at <%= flight.start_datetime %> (Duration: <%= flight.flight_duration %> hours)
+      </div>
+      <%= link_to 'Book Flight', new_booking_path(flight_id: flight.id, passenger_count: @passenger_count),
+      class: "book-link" %>
+    </div>
   <% end %>
-  
+<% else %>
+  <div class="no-flights">
+    <h3>Sorry! No flights available for today.</h3>
+    <p>Go for other days...!</p>
+  </div>
+<% end %>

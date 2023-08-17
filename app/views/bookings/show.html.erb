@@ -1,10 +1,35 @@
+<style>
+  /* Add your CSS styles here */
+  body {
+    font-family: Arial, sans-serif;
+  }
+  h1 {
+    color: green;
+  }
+  h2 {
+    color: blue;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 15px;
+  }
+  strong {
+    font-weight: bold;
+    color: solid black;
+  }
+</style>
+<div style= 'text-align:center'>
 <h1>Booking Information</h1>
 
-<p>Flight: <%= @booking.flight.departure_airport.code %> to <%= @booking.flight.arrival_airport.code %> departing at <%= @booking.flight.start_datetime %> (Duration: <%= @booking.flight.flight_duration %> hours)</p>
+<p style='color: red'>Flight: <%= @booking.flight.departure_airport.code %> to <%= @booking.flight.arrival_airport.code %> departing at <%= @booking.flight.start_datetime %> (Duration: <%= @booking.flight.flight_duration %> hours)</p>
 
-<h2>Passengers</h2>
+<h2>Passenger's</h2>
 <ul>
   <% @booking.passengers.each do |passenger| %>
-    <li><strong>Name:</strong> <%= passenger.name %>, <strong>Email:</strong> <%= passenger.email %></li>
+    <li><strong>Name:-</strong> <%= passenger.name %>,<br>
+    <strong>Email:-</strong> <%= passenger.email %></li>
   <% end %>
 </ul>
